@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#317EFB">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Login template 1">
+  <meta name="keywords" content="HTML, CSS, JS, Webpack, Webpack 4, Nodejs">
+  <meta name="author" content="Abhay Pai">
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+  <title>Iframe Communication 1 | Abhay Pai</title>
+</head>
+<body>
+  <header>
+    <h1>Iframe Part 1</h1>
+  </header>
+  <section>
+    <iframe id="Iframe" src="https://abhaypai.github.io/iframe-communication-1/" scrolling="no" style="width: 100%; border:0;"></iframe>
+  </section>
+
+  <script type="text/javascript">
+    // calling self initializing function for sending the message
+    (function initSend() {
+      // setting up the iframeid that has to be loaded with contentwindow status
+      var iframe = document.getElementById('Iframe').contentWindow;
+
+      // checking if iframe contentwindow exist
+      if (iframe) {
+        // debugging the contentWindow
+        // console.log(iframe);
+
+        // trigger send message on window load
+        window.addEventListener('load', sendMessage);
+      }
+
+      // send message function
+      function sendMessage() {
+        // debugging if sendMessage called on window load
+        // console.log('sendMessage');
+
+        // setting up data to send in postmessage
+        var data = {
+          'communication': true,
+        };
+
+        // send the post message to the iframe communication window
+        iframe.postMessage(data, '*');
+      }
+    })();
+
+    // calling self initializing function for getting the message
+    (function initGet() {
+      // adding a listener to the postmessage on this page
+      window.addEventListener('message', getMessage);
+
+      // function get message
+      function getMessage(e) {
+        // checking if data recieved
+        // console.log(e);
+        // console.log(e);
+
+        // checking if data height is present in the recieved data
+        if (e.data.docHeight) {
+          // debugging if data recieved is having value
+          // console.log(e.data.docHeight);
+
+          // triggering the height of iframe as per based on recieved messsage
+          setIframeAttribute(document.getElementById('Iframe'), e.data.docHeight);
+        }
+
+        // setting the height of the iframe
+        function setIframeAttribute(iframeId, height) {
+          return iframeId.setAttribute('height', height);
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
